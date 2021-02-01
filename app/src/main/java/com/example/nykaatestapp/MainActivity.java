@@ -13,7 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class MainActivity extends AppCompatActivity {
-    WebView webView;
+    MyWebview mWebView;
     SwipeRefreshLayout swipe;
 
 
@@ -22,29 +22,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         swipe = findViewById(R.id.swipeContainer);
-        webView = findViewById(R.id.webView);
-        swipe.setDistanceToTriggerSync(200);
-
-//        swipe.setOnChildScrollUpCallback((parent, child) -> {
-//            Log.i("Test", "Can child scroll up method ");
-//            Log.i("Test", "Scroll View Y position" + webView.getScrollY());
-//            return true;
-//        }
-//        );
+        mWebView = findViewById(R.id.webView);
+        mWebView.setViewGroup(swipe);
+        initListener(swipe);
         swipe.setOnRefreshListener(() -> LoadWeb());
         LoadWeb();
     }
 
 
     public void LoadWeb(){
-        webView =  findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setAppCacheEnabled(true);
-        webView.loadUrl("https://nykaa.clickpost.in/?waybill=1339095367332");
-        //webView.loadUrl("https://www.nykaa.com/brands/lakme/c/604?id=604&ptype=brand&root=brand_menu,top_brands,Lakme&popularity_algo=conversion");
+        mWebView =  findViewById(R.id.webView);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setAppCacheEnabled(true);
+        mWebView.loadUrl("https://nykaa.clickpost.in/?waybill=1339095367332");
         swipe.setRefreshing(true);
 
-        webView.setWebViewClient(new WebViewClient()
+        mWebView.setWebViewClient(new WebViewClient()
         {
             public  void  onPageFinished(WebView view, String url){
                 swipe.setRefreshing(false);
@@ -55,14 +48,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
 
-        if (webView.canGoBack()){
-            webView.goBack();
+        if (mWebView.canGoBack()){
+            mWebView.goBack();
         }else {
             finish();
         }
     }
 
-
+    private void initListener(SwipeRefreshLayout mSwipe) {
+        mSwipe.setOnRefreshListener(() -> {
+            mWebView.reload();
+            mSwipe.setRefreshing(false);
+        });
+        mSwipe.setOnChildScrollUpCallback((parent, child) -> mWebView.getScrollY()>0);
+    }
 
 
 }
