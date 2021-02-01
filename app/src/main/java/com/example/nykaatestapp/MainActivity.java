@@ -25,12 +25,12 @@ public class MainActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView);
         swipe.setDistanceToTriggerSync(200);
 
-        swipe.setOnChildScrollUpCallback((parent, child) -> {
-            Log.i("Test", "Can child scroll up method ");
-            Log.i("Test", "Scroll View Y position" + webView.getScrollY());
-            return true;
-        }
-        );
+//        swipe.setOnChildScrollUpCallback((parent, child) -> {
+//            Log.i("Test", "Can child scroll up method ");
+//            Log.i("Test", "Scroll View Y position" + webView.getScrollY());
+//            return true;
+//        }
+//        );
         swipe.setOnRefreshListener(() -> LoadWeb());
         LoadWeb();
     }
@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         webView =  findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAppCacheEnabled(true);
-        //webView.loadUrl("https://nykaa.clickpost.in/?waybill=1339095367332");
-        webView.loadUrl("https://www.nykaa.com/brands/lakme/c/604?id=604&ptype=brand&root=brand_menu,top_brands,Lakme&popularity_algo=conversion");
+        webView.loadUrl("https://nykaa.clickpost.in/?waybill=1339095367332");
+        //webView.loadUrl("https://www.nykaa.com/brands/lakme/c/604?id=604&ptype=brand&root=brand_menu,top_brands,Lakme&popularity_algo=conversion");
         swipe.setRefreshing(true);
 
         webView.setWebViewClient(new WebViewClient()
